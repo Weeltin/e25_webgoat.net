@@ -39,7 +39,7 @@ namespace WebGoatCore.Controllers
                     return RedirectToAction("Details", "Product", new { productId });
                 }
             var product = _productRepository.GetProductById(productId);
-            
+
             var cart = GetCart();
             if(!cart.OrderDetails.ContainsKey(productId))
             {

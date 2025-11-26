@@ -7,7 +7,7 @@ using Xunit;
 
 namespace WebGoatCore.Tests.Controllers
 {
-    // Minimal fake TempDataProvider so TempData works in tests
+    // fake TempDataProvider
     internal class FakeTempDataProvider : ITempDataProvider
     {
         public IDictionary<string, object> LoadTempData(HttpContext context)
@@ -15,7 +15,7 @@ namespace WebGoatCore.Tests.Controllers
 
         public void SaveTempData(HttpContext context, IDictionary<string, object> values)
         {
-            // no-op
+
         }
     }
 
@@ -23,7 +23,7 @@ namespace WebGoatCore.Tests.Controllers
     {
         private CartController CreateController()
         {
-            // We pass null for ProductRepository here because the
+            // Pass null for ProductRepository here because the
             // validation branch (quantity <= 0) never uses it.
             var controller = new CartController(productRepository: null);
 
@@ -39,17 +39,13 @@ namespace WebGoatCore.Tests.Controllers
         [Fact]
         public void AddOrder_WithNonPositiveQuantity_RedirectsToProductDetailsAndSetsError()
         {
-            // Arrange
             var controller = CreateController();
             int productId = 123;
 
-            // Act
             var result = controller.AddOrder(productId, quantity: 0);
 
-            // Assert
             var redirect = Assert.IsType<RedirectToActionResult>(result);
 
-            // Redirects back to the Product details page
             Assert.Equal("Details", redirect.ActionName);
             Assert.Equal("Product", redirect.ControllerName);
             Assert.Equal(productId, redirect.RouteValues["productId"]);

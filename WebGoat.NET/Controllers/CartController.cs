@@ -33,6 +33,11 @@ namespace WebGoatCore.Controllers
         [HttpPost("{productId}")]
         public IActionResult AddOrder(int productId, short quantity)
         {
+            if (quantity <= 0)
+                {
+                    TempData["Error"] = "Quantity must be a positive number.";
+                    return RedirectToAction("Details", "Product", new { productId });
+                }
             var product = _productRepository.GetProductById(productId);
             
             var cart = GetCart();
